@@ -1,0 +1,44 @@
+import random # testing only
+
+# Give some data file with more than x_lines, read into list line-by-line
+# Otherwise, read entire file into memory
+n = 100 # test_data length (hardcoded for testing)
+m = 4 # pattern length (hardcoded for testing)
+chars = {0: 'a', 1: 'c', 2: 'g', 3: 't'}
+inv_chars = {i: j for j, i in chars.items()} # reversed char dictionary
+random.seed(435377)
+test_data = [chars.get(random.randrange(0, 4)) for x in range(n)]
+test_pattern = ['a', 't', 't', 'g']
+
+pattern = test_pattern # for when test data is removed
+# index_table = [[] * n]
+
+i, j, start_index, compare, counter = 0, 0, 0, 0, 0
+flag = True
+index_table = [[x for x in range(0, 4)]] * n
+start_index = index_table[0][inv_chars.get(test_pattern[i])]
+while n - start_index > m:
+    while j < m:
+        if m - j == 1:
+            if input[start_index + j] != pattern[j]:
+                compare += 1
+                flag = False
+                break
+            input_two = input[start_index + j] + input[start_index + j + 1]
+            pattern_two = pattern[j] + pattern[j + 1]
+            compare += 1
+            if input_two != pattern_two:
+                flag = False
+                break
+            else:
+                compare += 1
+        if input[start_index + j] != pattern[j] or input[start_index + j + 1] != pattern[j + 1]:
+            flag = False
+            break
+        if flag is True:
+            counter += 1
+        else:
+            flag = True
+            j = 0
+    i += 1
+    start_index = index_table[0][inv_chars.get(test_pattern[i])]
