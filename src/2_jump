@@ -10,9 +10,11 @@ random.seed(435377)
 test_data = [chars.get(random.randrange(0, 4)) for x in range(n)]
 test_pattern = ['a', 't', 't', 'g']
 
+# for when test data is removed
 input_data = test_data
-pattern = test_pattern # for when test data is removed
-# index_table = [[] * n]
+pattern = test_pattern
+# n = len(input_data)
+# m = len(pattern)
 
 def gen_index_table():
     # Generate index table based on page 6 of the reference paper
@@ -22,11 +24,11 @@ def gen_index_table():
     return index_table
 
 def two_jump():
-    firstLet = pattern[0]
+    firstLet = pattern[0] # 'a' in this case
     i, j, start_index, compare, counter = 0, 0, 0, 0, 0
     flag = True
     index_table = gen_index_table()
-    start_index = index_table[inv_chars.get(firstLet)][i]
+    start_index = index_table[inv_chars.get(firstLet)][i] # 1 in this case
     while n - start_index > m:
         while j < m:
             if m - j == 1:
@@ -52,6 +54,7 @@ def two_jump():
                 j = 0
         i += 1
         start_index = index_table[inv_chars.get(firstLet)][i]
-    return counter
+    return [compare, counter]
 
-print(two_jump())
+print(two_jump()[0])
+print(two_jump()[1])
