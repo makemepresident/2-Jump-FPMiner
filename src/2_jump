@@ -16,16 +16,18 @@ pattern = test_pattern # for when test data is removed
 
 def gen_index_table():
     # Generate index table based on page 6 of the reference paper
-    return
+    index_table = [[] for i in range(4)] # where index 0 = 'a', 1 = 'c', ...
+    for index, value in enumerate(test_data):
+        index_table[inv_chars.get(value)].append(index)
+    return index_table
 
 def two_jump():
     firstLet = pattern[0]
     i, j, start_index, compare, counter = 0, 0, 0, 0, 0
     flag = True
     index_table = gen_index_table()
-    start_index = index_table[firstLet][i]
+    start_index = index_table[inv_chars.get(firstLet)][i]
     while n - start_index > m:
-        print(start_index)
         while j < m:
             if m - j == 1:
                 if input_data[start_index + j] != pattern[j]:
@@ -49,8 +51,7 @@ def two_jump():
                 flag = True
                 j = 0
         i += 1
-        # print(i)
-        start_index = index_table[i][inv_chars.get(test_pattern[0])]
+        start_index = index_table[inv_chars.get(firstLet)][i]
     return counter
 
 print(two_jump())
