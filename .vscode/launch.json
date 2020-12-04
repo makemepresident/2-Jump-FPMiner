@@ -8,8 +8,9 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "program": "./src/2_jump.py",
+            "console": "integratedTerminal",
+            "args": ["./data/dataset_1.txt", "a,g,g,a,t,c,t,g,g"]
         }
     ]
 }
