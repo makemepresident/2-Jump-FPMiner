@@ -1,12 +1,10 @@
 import random # testing only
 
-# Give some data file with more than x_lines, read into list line-by-line
-# Otherwise, read entire file into memory
-n = 100 # test_data length (hardcoded for testing)
+n = 20 # test_data length (hardcoded for testing)
 m = 4 # pattern length (hardcoded for testing)
-chars = {0: 'a', 1: 'c', 2: 'g', 3: 't'}
+chars = {0: 'a', 1: 'c', 3: 'g', 7: 't'}
 inv_chars = {i: j for j, i in chars.items()} # reversed char dictionary
-random.seed(435377)
+# random.seed(435377) # commented out to test different values
 test_data = [chars.get(random.randrange(0, 4)) for x in range(n)]
 test_pattern = ['a', 't', 't', 'g']
 
@@ -36,14 +34,14 @@ def two_jump():
                     compare += 1
                     flag = False
                     break
-                input_two = input_data[start_index + j] + input_data[start_index + j + 1]
-                pattern_two = pattern[j] + pattern[j + 1]
+            input_two = input_data[start_index + j] + input_data[start_index + j + 1]
+            pattern_two = pattern[j] + pattern[j + 1]
+            compare += 1
+            if input_two != pattern_two:
+                flag = False
+                break
+            else:
                 compare += 1
-                if input_two != pattern_two:
-                    flag = False
-                    break
-                else:
-                    compare += 1
             if input_data[start_index + j] != pattern[j] or input_data[start_index + j + 1] != pattern[j + 1]:
                 flag = False
                 break
@@ -52,9 +50,41 @@ def two_jump():
             else:
                 flag = True
                 j = 0
-        i += 1
-        start_index = index_table[inv_chars.get(firstLet)][i]
+            i += 1
+            start_index = index_table[inv_chars.get(firstLet)][i]
     return [compare, counter]
 
-print(two_jump()[0])
-print(two_jump()[1])
+def not_shit_two_jump():
+    firstLet = pattern[0] # 'a' in this case
+    compare, counter = 0, 0
+    flag = True
+    index_table = gen_index_table()
+    for i in index_table[inv_chars.get(firstLet)]: # [2,3,4]
+        for j in range(0, m - 1, 2): # 0, 2
+            # if m - j == 1:
+            #     if input_data[i + j] != pattern[j]:
+            #         compare += 1
+            #         flag = False
+            #         break
+            input_two = input_data[i + j] + input_data[i + j + 1] # []
+            pattern_two = pattern[j] + pattern[j + 1]
+            compare += 1
+            if input_two != pattern_two:
+                flag = False
+                break
+            else:
+                compare += 1
+            if input_data[i + j] != pattern[j] or input_data[i + j + 1] != pattern[j + 1]:
+                flag = False
+                break
+            if flag is True:
+                counter += 1
+            else:
+                flag = True
+                j = 0
+    return [compare, counter]
+
+print(input_data) # randomly generated DNA sequence
+print(pattern) # predefined pattern to match
+print(str(two_jump()[0]) + ' comparisons')
+print(str(two_jump()[1]) + ' counts')
