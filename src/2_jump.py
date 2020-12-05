@@ -5,6 +5,12 @@ class two_jump:
     def __init__(self, input_data):
         self.input_data = input_data
 
+    def gen_index_table(self):
+        index_table = [[] for i in range(4)] # where index 0 = 'a', 1 = 'c', ...
+        for index, value in enumerate(self.input_data):
+            index_table[self.char_to_index_map.get(value)].append(index)
+        return index_table        
+
     def match_pattern(self, pattern):
         input_length = len(self.input_data)
         pattern_length = len(pattern)
@@ -33,9 +39,3 @@ class two_jump:
                 counter += 1
                 matches.append(i)
         return [compare, counter, matches]
-
-    def gen_index_table(self):
-        index_table = [[] for i in range(4)] # where index 0 = 'a', 1 = 'c', ...
-        for index, value in enumerate(self.input_data):
-            index_table[self.char_to_index_map.get(value)].append(index)
-        return index_table

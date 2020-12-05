@@ -7,17 +7,22 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.tabbedpanel import TabbedPanel
+from kivy.uix.popup import Popup
+from kivy.uix.filechooser import FileChooserController
+from kivy.uix.textinput import TextInput
 
-class dna_viewer(App):
-    def __init__(self):
-        pass
+from kivy.properties import ObjectProperty, StringProperty
+from kivy.lang import Builder
+
+class PatternSearchWidget(BoxLayout):
+    text_input = ObjectProperty(None)
+    data_text = ObjectProperty(None)
+
+Builder.load_file('PatternSearchWidget.kv')
+     
+class DnaViewer(App):
 
     def build(self):
-        main_layout = BoxLayout()
+        main_layout = PatternSearchWidget()
 
-        main_layout.add_widget(control_panel())
-
-class control_panel(Widget):
-    def __init__(self):
-        tab_panel = TabbedPanel()
-
+        return main_layout
