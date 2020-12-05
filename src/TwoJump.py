@@ -12,8 +12,11 @@ class TwoJump:
         return index_table        
 
     def match_pattern(self, pattern):
+        #If no pattern is supplied return default value
         if(pattern == ''):
             return [0, 0, []]
+
+        #Initialize values
         input_length = len(self.input_data)
         pattern_length = len(pattern)
         first_letter = pattern[0]
@@ -21,12 +24,19 @@ class TwoJump:
         index_table = self.gen_index_table()
         is_odd = pattern_length % 2 == 1
 
+        #Iterate through indices that match the first char of the pattern
         for i in index_table[self.char_to_index_map.get(first_letter)]:
+            #Reset the flag each iteration
             flag = True
+
+            #Iterate through the chars of the pattern by twos
             for j in range(0, pattern_length - 1, 2):
+                #If pattern is larger than the remaining substring, set flag to false and break
                 if i + pattern_length > input_length:
                     flag = False
                     break
+
+                #Create unique sums of two chars, and compare them.
                 input_two = self.input_data[i + j] + self.input_data[i + j + 1] * 10
                 pattern_two = pattern[j] + pattern[j + 1] * 10
                 compare += 1
@@ -35,6 +45,8 @@ class TwoJump:
                     break
                 else:
                     compare += 1
+            
+            #If flag is still true, a match has been found. Add to count and save the index.
             if flag:
                 if is_odd and self.input_data[i + pattern_length - 1] != pattern[pattern_length - 1]:
                     continue
