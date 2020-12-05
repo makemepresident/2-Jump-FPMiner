@@ -1,3 +1,5 @@
+import sys
+
 import dna_viewer
 
 from dna_viewer import DnaViewer

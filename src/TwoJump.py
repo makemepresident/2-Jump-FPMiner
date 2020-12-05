@@ -12,6 +12,8 @@ class TwoJump:
         return index_table        
 
     def match_pattern(self, pattern):
+        if(pattern == ''):
+            return [0, 0, []]
         input_length = len(self.input_data)
         pattern_length = len(pattern)
         first_letter = pattern[0]
@@ -22,7 +24,7 @@ class TwoJump:
         for i in index_table[self.char_to_index_map.get(first_letter)]:
             flag = True
             for j in range(0, pattern_length - 1, 2):
-                if i + j >= input_length-1:
+                if i + pattern_length > input_length:
                     flag = False
                     break
                 input_two = self.input_data[i + j] + self.input_data[i + j + 1] * 10
@@ -38,4 +40,4 @@ class TwoJump:
                     continue
                 counter += 1
                 matches.append(i)
-        return [compare, counter, matches]
+        return [counter, compare, matches]

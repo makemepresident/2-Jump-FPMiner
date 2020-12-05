@@ -1,17 +1,104 @@
+<FitLabel@Label>:
+    size_hint_x: None
+    size: self.texture_size
+    pos_hint: {'left':1}
+    padding: 1, 0
+
+<MinimalLabel@Label>:
+    size_hint: None, None
+    size: self.texture_size
+    pos_hint: {'left':1}
+    halign: 'left'
+    valign: 'top'
+    padding: 5, 0
+
+<MyBoxLayout@BoxLayout>:
+    padding: 10, 5
+
 <PatternSearchWidget>:
     orientation: 'vertical'
-    text_input: text_input
+    input_pattern: input_pattern
     #data_text: data_text
+    #number_of_matches: number_of_matches
+    #number_of_comparisons: number_of_comparisons
+    #matched_indices: matched_indices
+
+    canvas.before:
+        Color:
+            rgb: .6, .6, .6
+        Rectangle:
+            size: self.size
+            source: 'img/background.png'
+
+    MinimalLabel:
+        text: 'Enter pattern to search for:'
 
     BoxLayout:
-        TextInput:
-            id: text_input
+
+        size_hint: (1, 0.1)
+        padding: 0, 5
+
+        DnaInput:
+            id: input_pattern
             multiline: False
 
         Button:
+            size_hint: 0.2, 1
             text: 'Search'
-            on_press: root.search_string()    
+            on_press: root.search_string()
 
-    Label:
-        #id: data_text
-        text: root.data_text
+    MinimalLabel:
+        text: 'Data set:'
+
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True    
+
+        # BoxLayout:
+        #     size_hint: 1, None
+        #     padding: 10, 10
+            
+        Label:
+            id: data_text
+            markup: True
+            font_size: '32sp'
+            #font_name: 'Fonts/BebasNeue-Regular.ttf'
+            padding: 5, 0
+            text: root.data_text
+            text_size: self.width, None
+            size_hint: 1, None
+            size: self.texture_size
+            valign: 'middle'
+
+    BoxLayout:
+        size_hint: 1, 0.25
+        orientation: 'vertical'
+
+        BoxLayout:
+
+            MyBoxLayout:
+
+                FitLabel:
+                    text: 'Matches found: '
+
+                FitLabel:
+                    #id: number_of_matches
+                    text: root.number_of_matches
+
+            MyBoxLayout:
+
+                FitLabel:
+                    text: 'Number of comparisons made: '
+
+                FitLabel:
+                    text: root.number_of_comparisons
+
+        ScrollView:
+            do_scroll_x: True
+            do_scroll_y: False
+
+            Label:
+                size_hint_x: None
+                text: 'Starting indices of matched values: ' + root.matched_indices
+                size: self.texture_size
+                padding: 10, 5
