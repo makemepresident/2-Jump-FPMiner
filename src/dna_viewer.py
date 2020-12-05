@@ -1,6 +1,10 @@
 import kivy
 kivy.require('2.0.0')
 
+import TwoJump
+
+from TwoJump import TwoJump
+
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
@@ -16,7 +20,15 @@ from kivy.lang import Builder
 
 class PatternSearchWidget(BoxLayout):
     text_input = ObjectProperty(None)
-    data_text = ObjectProperty(None)
+    data_text = StringProperty('ACGTCTGAG')
+
+    def search_string(self):
+        two_jump = TwoJump(self.data_text.text)
+        results = two_jump.match_pattern(self.text_input.text)
+        for i in results:
+            print(str(i))
+
+
 
 Builder.load_file('PatternSearchWidget.kv')
      

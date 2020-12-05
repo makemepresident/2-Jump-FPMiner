@@ -9,8 +9,9 @@
             multiline: False
 
         Button:
-            text: 'Search'    
+            text: 'Search'
+            on_press: root.search_string()    
 
     Label:
-        #id: text_input
-        text: 'ACGT'
+        #id: data_text
+        text: root.data_text

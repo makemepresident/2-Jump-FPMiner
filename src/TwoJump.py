@@ -1,4 +1,4 @@
-class two_jump:
+class TwoJump:
     index_to_char_map = {0: 'a', 1: 'c', 2: 'g', 3: 't'}
     char_to_index_map = {i: j for j, i in index_to_char_map.items()} # reversed char dictionary
 
