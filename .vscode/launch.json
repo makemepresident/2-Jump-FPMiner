@@ -5,12 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Dataset_1 & Pattern",
             "type": "python",
             "request": "launch",
             "program": "./src/2_jump.py",
             "console": "integratedTerminal",
             "args": ["./data/dataset_1.txt", "a,g,g,a,t,c,t,g,g"]
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
         }
     ]
 }

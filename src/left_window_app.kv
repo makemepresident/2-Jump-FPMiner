@@ -1,0 +1,34 @@
+#:kivy 2.0
+
+<left_window>:
+    GridLayout:
+        id: window_container
+        cols: 3
+        BoxLayout:
+            id: nav_bar
+            orientation: 'vertical'
+            size_hint: None, 0.3
+            width: 50
+            Button:
+                text: '1'
+            Button:
+                text: '2'
+            Button:
+                text: '3'
+        GridLayout:
+            id: left_window
+            rows: 2
+            padding: [1, 2]
+            spacing: 2
+            TextInput:
+                hint_text: 'Pattern input'
+                size_hint: 1, None
+                height: 40
+            BoxLayout:
+                color: blue
+        BoxLayout:
+            id: right_window
+            orientation: 'vertical'
+            padding: [1, 2]
+            Button:
+                text: 'big no'
