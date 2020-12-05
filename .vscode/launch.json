@@ -16,8 +16,9 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "program": "./src/main.py",
+            "console": "integratedTerminal",
+            "args": ["./data/dataset_1.txt"]
         }
     ]
 }

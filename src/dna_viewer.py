@@ -19,8 +19,11 @@ from kivy.uix.textinput import TextInput
 
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.lang import Builder
+from kivy.core.window import Window
 
 import re
+
+Window.size = (1280, 800)
 
 class DnaInput(TextInput):
     valid_input = re.compile('[acgt]*')
