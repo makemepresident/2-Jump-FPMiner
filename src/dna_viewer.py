@@ -81,9 +81,10 @@ class PatternSearchWidget(BoxLayout):
             
         self.data_text = temp_string
 
-
-
 Builder.load_file('PatternSearchWidget.kv')
+
+class SequenceMinerWidget:
+    
 
 def init_input(filename):
     input_data = []
