@@ -60,5 +60,4 @@ class DnaSequenceMiner:
 
         self.buildSequenceList(root, result, '', length, min_sup)
 
-        return result
-        
+        return sorted(result, key = lambda x: x[1], reverse=True)
