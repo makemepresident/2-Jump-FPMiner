@@ -53,7 +53,7 @@ class PatternSearchWidget(BoxLayout):
 
     def search_string(self):
         two_jump = TwoJump(self.input_data)
-        results = two_jump.match_pattern(self.input_pattern.text)
+        results = two_jump.match_pattern_no_op(self.input_pattern.text)
         
         self.number_of_matches = str(results[0])
         self.number_of_comparisons = str(results[1])

@@ -37,8 +37,8 @@ class TwoJump:
                     break
 
                 #Create unique sums of two chars, and compare them.
-                input_two = self.input_data[i + j] + self.input_data[i + j + 1] * 10
-                pattern_two = pattern[j] + pattern[j + 1] * 10
+                input_two = self.char_to_index_map.get(self.input_data[i + j]) + self.char_to_index_map.get(self.input_data[i + j + 1]) * 10
+                pattern_two = self.char_to_index_map.get(pattern[j]) + self.char_to_index_map.get(pattern[j + 1]) * 10
                 compare += 1
                 if input_two != pattern_two:
                     flag = False
@@ -50,6 +50,138 @@ class TwoJump:
             if flag:
                 if is_odd and self.input_data[i + pattern_length - 1] != pattern[pattern_length - 1]:
                     continue
+                counter += 1
+                matches.append(i)
+        return [counter, compare, matches]
+
+    def match_pattern_chars(self, pattern):
+        #If no pattern is supplied return default value
+        if(pattern == ''):
+            return [0, 0, []]
+
+        #Initialize values
+        input_length = len(self.input_data)
+        pattern_length = len(pattern)
+        first_letter = pattern[0]
+        compare, counter, matches = 0, 0, []
+        index_table = self.gen_index_table()
+        is_odd = pattern_length % 2 == 1
+
+        #Iterate through indices that match the first char of the pattern
+        for i in index_table[self.char_to_index_map.get(first_letter)]:
+            #Reset the flag each iteration
+            flag = True
+
+            #Iterate through the chars of the pattern by twos
+            for j in range(0, pattern_length - 1, 2):
+                #If pattern is larger than the remaining substring, set flag to false and break
+                if i + pattern_length > input_length:
+                    flag = False
+                    break
+
+                #Create unique sums of two chars, and compare them.
+                input_two = self.input_data[i + j] + self.input_data[i + j + 1]
+                pattern_two = pattern[j] + pattern[j + 1]
+                compare += 1
+                if input_two != pattern_two:
+                    flag = False
+                    break
+                else:
+                    compare += 1
+            
+            #If flag is still true, a match has been found. Add to count and save the index.
+            if flag:
+                if is_odd and self.input_data[i + pattern_length - 1] != pattern[pattern_length - 1]:
+                    continue
+                counter += 1
+                matches.append(i)
+        return [counter, compare, matches]
+
+    def match_pattern_no_op(self, pattern):
+    #If no pattern is supplied return default value
+        if(pattern == ''):
+            return [0, 0, []]
+
+        #Initialize values
+        input_length = len(self.input_data)
+        pattern_length = len(pattern)
+        first_letter = pattern[0]
+        compare, counter, matches = 0, 0, []
+        index_table = self.gen_index_table()
+        is_odd = pattern_length % 2 == 1
+
+        #Iterate through indices that match the first char of the pattern
+        for i in index_table[self.char_to_index_map.get(first_letter)]:
+            #Reset the flag each iteration
+            flag = True
+
+            #Iterate through the chars of the pattern by twos
+            for j in range(0, pattern_length - 1, 2):
+                #If pattern is larger than the remaining substring, set flag to false and break
+                if i + pattern_length > input_length:
+                    flag = False
+                    break
+
+                if pattern_length - j -2 == 1:
+                    if self.input_data[i+j+2] == pattern[j+2]:
+                        compare += 2
+                    else:
+                        compare += 2
+                        flag = False
+                        break
+
+                #Create unique sums of two chars, and compare them.
+                input_two = self.input_data[i + j] + self.input_data[i + j + 1]
+                pattern_two = pattern[j] + pattern[j + 1]
+                compare += 1
+                if input_two != pattern_two:
+                    flag = False
+                    compare += 1
+                    break
+                #elif self.input_data[i+j] != pattern[j]:
+                    #flag = False
+                    #compare += 1
+                    #break
+                else:
+                    compare += 1
+            
+            #If flag is still true, a match has been found. Add to count and save the index.
+            if flag:
+                counter += 1
+                matches.append(i)
+        return [counter, compare, matches]
+
+    def match_pattern_2(self, pattern):
+        if(pattern == ''):
+            return [0, 0, []]
+
+        #Initialize values
+        input_length = len(self.input_data)
+        pattern_length = len(pattern)
+        first_letter = pattern[0]
+        compare, counter, matches = 0, 0, []
+        index_table = self.gen_index_table()
+
+        #Iterate through indices that match the first char of the pattern
+        for i in index_table[self.char_to_index_map.get(first_letter)]:
+            #Reset the flag each iteration
+            flag = True
+
+            #Iterate through each char
+            for j in range(0, pattern_length):
+                #If pattern is larger than the remaining substring, set flag to false and break
+                if i + j >= input_length:
+                    flag = False
+                    break
+
+                if pattern[j] != self.input_data[i+j]:
+                    flag = False
+                    break
+                else:
+                    compare += 1
+            
+            #If flag is still true, a match has been found. Add to count and save the index.
+            if flag:
                 counter += 1
                 matches.append(i)
         return [counter, compare, matches]
