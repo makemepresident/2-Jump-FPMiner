@@ -9,7 +9,7 @@ This project was made with Python version 3.9.0. First, install Python, along wi
 
 ## Running
 
-To run the program, simply execute `python.exe` with the path to [main.py](src/main.py).
+To run the program, simply execute `python.exe` with the path to [main.py](src/main.py) as the only argument.
 
 ## Operating the GUI
 
