@@ -1,0 +1,77 @@
+#:kivy 2.0
+
+<SequenceMinerWidget>:
+    orientation: 'vertical'
+
+    canvas.before:
+        Color:
+            rgb: .6, .6, .6
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: 'img/background.png'
+
+    BoxLayout:
+        size_hint: 1, 0.1
+        padding: 0.2, 0.1
+
+        Label:
+            text: "Select size of sequences to mine:"
+
+        Slider:
+            id: depth_slider
+            min: 1
+            max: root.max_depth
+            value_track: True
+            value: root.depth_value
+            on_value: root.depth_value = int(self.value)
+
+        Label:
+            text: str(int(depth_slider.value))
+            size_hint: 0.1, 1
+
+    BoxLayout:
+        size_hint: 0.6, 0.1
+        padding: 0.2, 0.1
+
+        Label:
+            text: "Minimum Support Threshold:"
+            pos_hint:{'right':0.1}
+
+        DigitInput:
+            size_hint: 0.25, 0.40
+            pos_hint: {'top':0.65}
+            multiline: False
+            text: str(root.min_sup)
+            on_text: root.set_min_sup(self.text)
+
+        Button:
+            size_hint: 0.25, 0.40
+            padding: 0.2, 0
+            pos_hint: {'top':0.65}
+            text: "Mine"
+            on_press: root.mine_sequences()
+
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+
+        padding: 0.2, 0.1
+            
+        Label:
+
+            canvas.before:
+                Color:
+                    rgb: .184, .188, .192
+                Rectangle:
+                    size: self.size
+            id: data_text
+            markup: True
+            font_size: '32sp'
+            #font_name: 'Fonts/BebasNeue-Regular.ttf'
+            padding: 5, 0
+            text: root.data_text
+            text_size: self.width, None
+            size_hint: 1, None
+            size: self.texture_size
+            valign: 'middle'

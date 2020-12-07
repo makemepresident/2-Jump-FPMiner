@@ -13,11 +13,11 @@ def gen_index_table():
     return index_table
 
 def two_jump():
-    firstLet = pattern[0] # 'a' in this case
+    firstLet = pattern[0] # Grab first character of the input pattern
     i, j, start_index, compare, counter = 0, 0, 0, 0, 0
     flag = True
-    index_table = gen_index_table()
-    start_index = index_table[inv_chars.get(firstLet)][i] # 1 in this case
+    index_table = gen_index_table() # Generate index table
+    start_index = index_table[inv_chars.get(firstLet)][i] # Get first index
     while n - start_index > m:
         while j < m:
             if m - j == 1:

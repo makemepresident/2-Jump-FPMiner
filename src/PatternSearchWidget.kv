@@ -20,11 +20,6 @@
 <PatternSearchWidget>:
     orientation: 'vertical'
     input_pattern: input_pattern
-    #data_text: data_text
-    #number_of_matches: number_of_matches
-    #number_of_comparisons: number_of_comparisons
-    #matched_indices: matched_indices
-
     canvas.before:
         Color:
             rgb: .6, .6, .6
@@ -55,11 +50,6 @@
     ScrollView:
         do_scroll_x: False
         do_scroll_y: True    
-
-        # BoxLayout:
-        #     size_hint: 1, None
-        #     padding: 10, 10
-            
         Label:
 
             canvas.before:
@@ -70,7 +60,6 @@
             id: data_text
             markup: True
             font_size: '32sp'
-            #font_name: 'Fonts/BebasNeue-Regular.ttf'
             padding: 5, 0
             text: root.data_text
             text_size: self.width, None
@@ -90,7 +79,6 @@
                     text: 'Matches found: '
 
                 FitLabel:
-                    #id: number_of_matches
                     text: root.number_of_matches
 
             MyBoxLayout:
