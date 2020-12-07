@@ -2,6 +2,7 @@ import kivy
 kivy.require('2.0.0')
 
 import sys
+import os
 import TwoJump
 from TwoJump import TwoJump
 from dna_tree import DnaSequenceMiner
@@ -135,6 +136,12 @@ class SequenceMinerWidget(BoxLayout):
              self.min_sup = 0
         else:
             self.min_sup = int(string_value)
+    
+    def type_depth(self, string_value):
+        if string_value == '' or int(string_value) not in range(1, self.max_depth+1):
+            self.depth_value = 1
+        else:
+            self.depth_value = int(string_value)
 
     def mine_sequences(self):
         miner = DnaSequenceMiner(data_string=self.input_data)
@@ -154,6 +161,7 @@ class SidebarWidget(BoxLayout):
     def open_explorer(self):
         # create popup
         self.browser = FileChooserListView()
+        self.browser.path = os.getcwd()
         self.popup = Popup(title='File Browser', content=self.browser, size_hint=(0.9, 0.9), auto_dismiss=True)
         self.browser.bind(on_submit=self.choose_file)
         self.popup.open()
