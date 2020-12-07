@@ -158,38 +158,20 @@ class SidebarWidget(BoxLayout):
         self.ps = ps
         self.fpm = fpm
 
-    def open_explorer(self):
-        # create popup
-        self.browser = FileChooserListView()
-        self.browser.path = os.getcwd()
-        self.popup = Popup(title='File Browser', content=self.browser, size_hint=(0.9, 0.9), auto_dismiss=True)
-        self.browser.bind(on_submit=self.choose_file)
-        self.popup.open()
+    def init_input(self, filename):
+        '''
+        Parses file input to ensure that source data is correct
 
-    def choose_file(self, useless1, filename, useless2):
-        self.popup.dismiss()
-        output = init_input(filename[0])
-        self.ps.set_input_data(output)
-        self.fpm.set_input_data(output)
-        
+        Args:
+            filename: name of input file ending with .txt
 
-Builder.load_file('SidebarWidget.kv')
+        Returns:
+            output: parsed input file in the form of a string
 
-def init_input(filename):
-    '''
-    Parses file input to ensure that source data is correct
-
-    Args:
-        filename: name of input file ending with .txt
-
-    Returns:
-        output: parsed input file in the form of a string
-
-        for example, "ACTGGTGACTGTAAG"
-    '''
-    input_data = []
-    for i in range(2):
-        try:
+            for example, "ACTGGTGACTGTAAG"
+        '''
+        input_data = []
+        for i in range(2):
             reader = open(filename)
             for line in reader:
                 line_arr = line.split(' ')
@@ -200,28 +182,88 @@ def init_input(filename):
                     if char_arr[len(char_arr) - 1] == '\n':
                         char_arr.pop()
                     input_data += char_arr
-            print('File parsed correctly...')
             break
-        except FileNotFoundError:
-            print('File not found, please verify the path and try again')
-            if i == 0:
-                if '\\' in filename:
-                    filename = '../data/' + filename[filename.index('\\') + 1:len(filename) - 1]
-                else:
-                    filename = '../data/' + filename
-                continue
-            sys.exit()
-        except IndexError:
-            print('Problem parsing the input file, check guidelines to ensure proper form')
-            sys.exit()
 
-    expression = re.compile('[acgt]*')
-    output = ''
-    for i in input_data:
-        if(re.fullmatch(expression, i) != None):
-            output += i
+        expression = re.compile('[acgt]*')
+        output = ''
+        for i in input_data:
+            if(re.fullmatch(expression, i) != None):
+                output += i
+        
+        return output
+
+    def open_explorer(self):
+        # create popup
+        self.browser = FileChooserListView()
+        self.browser.path = os.getcwd()
+        self.popup = Popup(title='File Browser', content=self.browser, size_hint=(0.9, 0.9), auto_dismiss=True)
+        self.browser.bind(on_submit=self.choose_file)
+        self.popup.open()
+
+    def choose_file(self, useless1, filename, useless2):
+        self.popup.dismiss()
+        try:
+            output = self.init_input(filename[0])
+        except FileNotFoundError:
+            Popup(title='Error', content=Label(text='File was not found'), size_hint=(0.9, 0.9), auto_dismiss=True).open()
+            return
+        except IndexError:
+           Popup(title='Error', content=Label(text='File was not found'), size_hint=(0.9, 0.9), auto_dismiss=True).open()
+           return
+        
+        self.ps.set_input_data(output)
+        self.fpm.set_input_data(output)
+        
+
+Builder.load_file('SidebarWidget.kv')
+
+# def init_input(filename):
+#     '''
+#     Parses file input to ensure that source data is correct
+
+#     Args:
+#         filename: name of input file ending with .txt
+
+#     Returns:
+#         output: parsed input file in the form of a string
+
+#         for example, "ACTGGTGACTGTAAG"
+#     '''
+#     input_data = []
+#     for i in range(2):
+#         try:
+#             reader = open(filename)
+#             for line in reader:
+#                 line_arr = line.split(' ')
+#                 for index, substring in enumerate(line_arr):
+#                     if index == 0:
+#                         continue
+#                     char_arr = list(substring)
+#                     if char_arr[len(char_arr) - 1] == '\n':
+#                         char_arr.pop()
+#                     input_data += char_arr
+#             print('File parsed correctly...')
+#             break
+#         except FileNotFoundError:
+#             print('File not found, please verify the path and try again')
+#             if i == 0:
+#                 if '\\' in filename:
+#                     filename = '../data/' + filename[filename.index('\\') + 1:len(filename) - 1]
+#                 else:
+#                     filename = '../data/' + filename
+#                 continue
+#             sys.exit()
+#         except IndexError:
+#             print('Problem parsing the input file, check guidelines to ensure proper form')
+#             sys.exit()
+
+#     expression = re.compile('[acgt]*')
+#     output = ''
+#     for i in input_data:
+#         if(re.fullmatch(expression, i) != None):
+#             output += i
     
-    return output
+#     return output
      
 class DnaViewer(App):
     '''
