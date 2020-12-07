@@ -20,10 +20,6 @@
 <PatternSearchWidget>:
     orientation: 'vertical'
     input_pattern: input_pattern
-    #data_text: data_text
-    #number_of_matches: number_of_matches
-    #number_of_comparisons: number_of_comparisons
-    #matched_indices: matched_indices
 
     canvas.before:
         Color:
@@ -55,10 +51,6 @@
     ScrollView:
         do_scroll_x: False
         do_scroll_y: True    
-
-        # BoxLayout:
-        #     size_hint: 1, None
-        #     padding: 10, 10
             
         Label:
 
@@ -90,7 +82,6 @@
                     text: 'Matches found: '
 
                 FitLabel:
-                    #id: number_of_matches
                     text: root.number_of_matches
 
             MyBoxLayout:
