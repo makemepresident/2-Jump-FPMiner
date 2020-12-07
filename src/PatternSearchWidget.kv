@@ -20,7 +20,6 @@
 <PatternSearchWidget>:
     orientation: 'vertical'
     input_pattern: input_pattern
-
     canvas.before:
         Color:
             rgb: .6, .6, .6
@@ -51,7 +50,6 @@
     ScrollView:
         do_scroll_x: False
         do_scroll_y: True    
-            
         Label:
 
             canvas.before:
@@ -62,7 +60,6 @@
             id: data_text
             markup: True
             font_size: '32sp'
-            #font_name: 'Fonts/BebasNeue-Regular.ttf'
             padding: 5, 0
             text: root.data_text
             text_size: self.width, None
