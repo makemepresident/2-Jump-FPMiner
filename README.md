@@ -31,4 +31,4 @@ Finally, the frequent sequence miner component can be operated by entering a des
 
 ## Relevant Source Code
 
-Our implementation of the two-jump algorithm can be found in [src/TwoJump.py](src/TwoJump.py). Our own algorithm for frequent sequence mining can be found in [src/dna_tree.py](src/dna_tree.py). Finally, the source for the GUI implementation can be found in [src/dna_viewer.py](dna_viewer.py), along with the accompanying `.kv` files ([1](src/PatternSearchWidget.kv)[2](src/SequenceMinerWidget.kv)[3](src/SidebarWidget.kv)).
+Our implementation of the two-jump algorithm can be found in [src/TwoJump.py](src/TwoJump.py). Our own algorithm for frequent sequence mining can be found in [src/dna_tree.py](src/dna_tree.py). Finally, the source for the GUI implementation can be found in [src/dna_viewer.py](dna_viewer.py), along with the accompanying `.kv` files ([1](src/PatternSearchWidget.kv), [2](src/SequenceMinerWidget.kv), [3](src/SidebarWidget.kv)).
