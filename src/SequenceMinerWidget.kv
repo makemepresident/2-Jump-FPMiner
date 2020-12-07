@@ -1,4 +1,5 @@
 #:kivy 2.0
+#:import exp math.exp
 
 <SequenceMinerWidget>:
     orientation: 'vertical'
@@ -21,7 +22,8 @@
         Slider:
             id: depth_slider
             min: 1
-            max: root.max_depth
+            # max: root.max_depth
+            max: exp(root.max_depth)
             value_track: True
             value: root.depth_value
             on_value: root.depth_value = int(self.value)

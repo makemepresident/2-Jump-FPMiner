@@ -14,7 +14,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.popup import Popup
-from kivy.uix.filechooser import FileChooserController
+from kivy.uix.filechooser import *
 from kivy.uix.textinput import TextInput
 
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
@@ -136,7 +136,6 @@ class SequenceMinerWidget(BoxLayout):
         else:
             self.min_sup = int(string_value)
 
-
     def mine_sequences(self):
         miner = DnaSequenceMiner(data_string=self.input_data)
 
@@ -144,7 +143,29 @@ class SequenceMinerWidget(BoxLayout):
         print(str(self.depth_value))
 
 Builder.load_file('SequenceMinerWidget.kv')
+
+class SidebarWidget(BoxLayout):
     
+    def __init__(self, ps, fpm, **kwargs):
+        super().__init__(**kwargs)
+        self.ps = ps
+        self.fpm = fpm
+
+    def open_explorer(self):
+        # create popup
+        self.browser = FileChooserListView()
+        self.popup = Popup(title='File Browser', content=self.browser, size_hint=(0.9, 0.9), auto_dismiss=True)
+        self.browser.bind(on_submit=self.choose_file)
+        self.popup.open()
+
+    def choose_file(self, useless1, filename, useless2):
+        self.popup.dismiss()
+        output = init_input(filename[0])
+        self.ps.set_input_data(output)
+        self.fpm.set_input_data(output)
+        
+
+Builder.load_file('SidebarWidget.kv')
 
 def init_input(filename):
     '''
@@ -212,12 +233,14 @@ class DnaViewer(App):
 
         input_data = ''
 
-        if(len(sys.argv) > 1):
-            input_data = init_input(sys.argv[1])
+        # if(len(sys.argv) > 1):
+        #     input_data = init_input(sys.argv[1])
 
         pattern_search.set_input_data(input_data)
-        mining_widget = SequenceMinerWidget(input_data='actgtcg')
+        mining_widget = SequenceMinerWidget()
+        sidebar = SidebarWidget(pattern_search, mining_widget)
 
+        main_layout.add_widget(sidebar)
         main_layout.add_widget(pattern_search)
         main_layout.add_widget(mining_widget)
 

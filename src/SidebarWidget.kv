@@ -1,0 +1,9 @@
+#:kivy 2.0
+
+<SidebarWidget>:
+    orientation: 'vertical'
+    size_hint: (0.15, 1)
+    Button:
+        # Add image instead of text
+        text: 'Choose\n   File'
+        on_press: root.open_explorer()
