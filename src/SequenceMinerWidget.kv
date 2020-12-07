@@ -1,4 +1,5 @@
 #:kivy 2.0
+#:import exp math.exp
 
 <SequenceMinerWidget>:
     orientation: 'vertical'
@@ -12,43 +13,58 @@
             source: 'img/background.png'
 
     BoxLayout:
-        size_hint: 1, 0.1
-        padding: 0.2, 0.1
+        size_hint: 1, 0.3
+        padding: 10, 10
 
-        Label:
-            text: "Select size of sequences to mine:"
+        BoxLayout:
+            orientation: 'vertical'
 
-        Slider:
-            id: depth_slider
-            min: 1
-            max: root.max_depth
-            value_track: True
-            value: root.depth_value
-            on_value: root.depth_value = int(self.value)
+            BoxLayout:
+                size_hint: 0.7, 0.4
+                padding: 10, 0
 
-        Label:
-            text: str(int(depth_slider.value))
-            size_hint: 0.1, 1
+                Label:
+                    text: "Select size of sequences to mine:"
+                    padding: 5, 0
+                    #pos_hint: {'top':0.3}
 
-    BoxLayout:
-        size_hint: 0.6, 0.1
-        padding: 0.2, 0.1
+                # Slider:
+                #     id: depth_slider
+                #     min: 1
+                #     max: root.max_depth
+                #     #max: exp(root.max_depth)
+                #     value_track: True
+                #     value: root.depth_value
+                #     on_value: root.depth_value = int(self.value)
 
-        Label:
-            text: "Minimum Support Threshold:"
-            pos_hint:{'right':0.1}
+                DigitInput:
+                    text: str(root.depth_value)
+                    size_hint: 0.25, 0.35
+                    pos_hint: {'top':0.65}
+                    on_text: root.depth_value = int(self.text) if self.text != '' else 1
 
-        DigitInput:
-            size_hint: 0.25, 0.40
-            pos_hint: {'top':0.65}
-            multiline: False
-            text: str(root.min_sup)
-            on_text: root.set_min_sup(self.text)
+            BoxLayout:
+                size_hint: 0.7, 0.4
+                padding: 10, 0
 
+                Label:
+                    text: "Minimum Support Threshold:"
+                    padding: 5, 0
+                    pos_hint: {'top':1.2}
+
+                DigitInput:
+                    size_hint: 0.25, 0.35
+                    pos_hint: {'top':0.9}
+                    multiline: False
+                    text: str(root.min_sup)
+                    on_text: root.set_min_sup(self.text)
+
+            
         Button:
-            size_hint: 0.25, 0.40
-            padding: 0.2, 0
-            pos_hint: {'top':0.65}
+            size_hint: 0.4, 0.4
+            padding: 10, 5
+            pos_hint: {'top':0.65, 'right':0.9}
+            padding: 5, 0
             text: "Mine"
             on_press: root.mine_sequences()
 

@@ -2,6 +2,7 @@ import kivy
 kivy.require('2.0.0')
 
 import sys
+import os
 import TwoJump
 from TwoJump import TwoJump
 from dna_tree import DnaSequenceMiner
@@ -14,7 +15,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.popup import Popup
-from kivy.uix.filechooser import FileChooserController
+from kivy.uix.filechooser import *
 from kivy.uix.textinput import TextInput
 
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
@@ -135,7 +136,12 @@ class SequenceMinerWidget(BoxLayout):
              self.min_sup = 0
         else:
             self.min_sup = int(string_value)
-
+    
+    def type_depth(self, string_value):
+        if string_value == '' or int(string_value) not in range(1, self.max_depth+1):
+            self.depth_value = 1
+        else:
+            self.depth_value = int(string_value)
 
     def mine_sequences(self):
         miner = DnaSequenceMiner(data_string=self.input_data)
@@ -144,23 +150,28 @@ class SequenceMinerWidget(BoxLayout):
         print(str(self.depth_value))
 
 Builder.load_file('SequenceMinerWidget.kv')
+
+class SidebarWidget(BoxLayout):
     
+    def __init__(self, ps, fpm, **kwargs):
+        super().__init__(**kwargs)
+        self.ps = ps
+        self.fpm = fpm
 
-def init_input(filename):
-    '''
-    Parses file input to ensure that source data is correct
+    def init_input(self, filename):
+        '''
+        Parses file input to ensure that source data is correct
 
-    Args:
-        filename: name of input file ending with .txt
+        Args:
+            filename: name of input file ending with .txt
 
-    Returns:
-        output: parsed input file in the form of a string
+        Returns:
+            output: parsed input file in the form of a string
 
-        for example, "ACTGGTGACTGTAAG"
-    '''
-    input_data = []
-    for i in range(2):
-        try:
+            for example, "ACTGGTGACTGTAAG"
+        '''
+        input_data = []
+        for i in range(2):
             reader = open(filename)
             for line in reader:
                 line_arr = line.split(' ')
@@ -171,28 +182,88 @@ def init_input(filename):
                     if char_arr[len(char_arr) - 1] == '\n':
                         char_arr.pop()
                     input_data += char_arr
-            print('File parsed correctly...')
             break
-        except FileNotFoundError:
-            print('File not found, please verify the path and try again')
-            if i == 0:
-                if '\\' in filename:
-                    filename = '../data/' + filename[filename.index('\\') + 1:len(filename) - 1]
-                else:
-                    filename = '../data/' + filename
-                continue
-            sys.exit()
-        except IndexError:
-            print('Problem parsing the input file, check guidelines to ensure proper form')
-            sys.exit()
 
-    expression = re.compile('[acgt]*')
-    output = ''
-    for i in input_data:
-        if(re.fullmatch(expression, i) != None):
-            output += i
+        expression = re.compile('[acgt]*')
+        output = ''
+        for i in input_data:
+            if(re.fullmatch(expression, i) != None):
+                output += i
+        
+        return output
+
+    def open_explorer(self):
+        # create popup
+        self.browser = FileChooserListView()
+        self.browser.path = os.getcwd()
+        self.popup = Popup(title='File Browser', content=self.browser, size_hint=(0.9, 0.9), auto_dismiss=True)
+        self.browser.bind(on_submit=self.choose_file)
+        self.popup.open()
+
+    def choose_file(self, useless1, filename, useless2):
+        self.popup.dismiss()
+        try:
+            output = self.init_input(filename[0])
+        except FileNotFoundError:
+            Popup(title='Error', content=Label(text='File was not found'), size_hint=(0.9, 0.9), auto_dismiss=True).open()
+            return
+        except IndexError:
+           Popup(title='Error', content=Label(text='File was not found'), size_hint=(0.9, 0.9), auto_dismiss=True).open()
+           return
+        
+        self.ps.set_input_data(output)
+        self.fpm.set_input_data(output)
+        
+
+Builder.load_file('SidebarWidget.kv')
+
+# def init_input(filename):
+#     '''
+#     Parses file input to ensure that source data is correct
+
+#     Args:
+#         filename: name of input file ending with .txt
+
+#     Returns:
+#         output: parsed input file in the form of a string
+
+#         for example, "ACTGGTGACTGTAAG"
+#     '''
+#     input_data = []
+#     for i in range(2):
+#         try:
+#             reader = open(filename)
+#             for line in reader:
+#                 line_arr = line.split(' ')
+#                 for index, substring in enumerate(line_arr):
+#                     if index == 0:
+#                         continue
+#                     char_arr = list(substring)
+#                     if char_arr[len(char_arr) - 1] == '\n':
+#                         char_arr.pop()
+#                     input_data += char_arr
+#             print('File parsed correctly...')
+#             break
+#         except FileNotFoundError:
+#             print('File not found, please verify the path and try again')
+#             if i == 0:
+#                 if '\\' in filename:
+#                     filename = '../data/' + filename[filename.index('\\') + 1:len(filename) - 1]
+#                 else:
+#                     filename = '../data/' + filename
+#                 continue
+#             sys.exit()
+#         except IndexError:
+#             print('Problem parsing the input file, check guidelines to ensure proper form')
+#             sys.exit()
+
+#     expression = re.compile('[acgt]*')
+#     output = ''
+#     for i in input_data:
+#         if(re.fullmatch(expression, i) != None):
+#             output += i
     
-    return output
+#     return output
      
 class DnaViewer(App):
     '''
@@ -212,12 +283,14 @@ class DnaViewer(App):
 
         input_data = ''
 
-        if(len(sys.argv) > 1):
-            input_data = init_input(sys.argv[1])
+        # if(len(sys.argv) > 1):
+        #     input_data = init_input(sys.argv[1])
 
         pattern_search.set_input_data(input_data)
-        mining_widget = SequenceMinerWidget(input_data='actgtcg')
+        mining_widget = SequenceMinerWidget()
+        sidebar = SidebarWidget(pattern_search, mining_widget)
 
+        main_layout.add_widget(sidebar)
         main_layout.add_widget(pattern_search)
         main_layout.add_widget(mining_widget)
 
